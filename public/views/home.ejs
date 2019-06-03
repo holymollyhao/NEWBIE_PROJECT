@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style1.css">
+    <title>TODAY</title>
+
+    <script type="text/javascript" src="index1.js"></script>
+    <!--jQuery 사용을 위한 코드-->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <!--Axios 사용을 위한 코드-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <!--bootstrap 사용을 위한 코드-->
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <!--시작할 때 DB에 저장된 데이터 읽기-->
+  </head>
+  <body>
+  <nav class="navbar navbar-default">
+ <div class="container">
+  <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+       </button>
+       <div class="navbar-brand">TODAY</div>
+      </div>
+  <div class="collapse navbar-collapse" id="myNavbar">
+   <ul class="nav navbar-nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/list">List</a></li>
+   </ul>
+   <ul class="nav navbar-nav navbar-right">
+    <% if(isAuthenticated){ %>
+     <li><a href="/users/<%= currentUser.username %>">My Account</a></li>
+     <li><a href="/logout">Logout</a></li>
+    <% } else { %>
+     <li><a href="/users/new">Sign Up</a></li>
+     <li><a href="/login">Login</a></li>
+    <% } %>
+   </ul>
+  </div>
+ </div>
+</nav>
+
+    <section id="app">
+      <header>
+        <h1 id="title">TODAY</h1>
+        <form method="POST" action="/vote/create" id='addForm'>
+          <input align="center" id = "inputer" name="vote_input" type="text" placeholder="What's on your mind?">
+          <div ng-app="">
+          <textarea name="vote_input2" style="resize:none" class="notes" rows="10" cols="50"></textarea>
+          <% if(isAuthenticated){ %>
+            <input type="hidden" class="hidden" name="hidden" value="<%= currentUser.username %>"></input>
+          <% } else { %>
+            <input type="hidden" class="hidden" name="hidden" value='false'></input>
+          <%}%>
+        </form>
+      </header>
+    </section>
+    <input type="button" class = "check-button" value="+" onclick="addVote()">
+    
+  </body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <meta charset="utf-8" />
+    <title>TODAY</title>
+    <link rel="stylesheet" href="style1.css">
+    <script type="text/javascript" src="index1.js"></script>
+    <!--jQuery 사용을 위한 코드-->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <!--Axios 사용을 위한 코드-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <!--bootstrap 사용을 위한 코드-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!--시작할 때 DB에 저장된 데이터 읽기-->
+    <script>$(document).ready(loadVote)</script>
+    <script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
+ </head>
+ <body>
+  <nav class="navbar navbar-default">
+ <div class="container">
+  <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+       </button>
+       <div class="navbar-brand">TODAY</div>
+      </div>
+  <div class="collapse navbar-collapse" id="myNavbar">
+   <ul class="nav navbar-nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/list">List</a></li>
+   </ul>
+   <ul class="nav navbar-nav navbar-right">
+    <% if(isAuthenticated){ %>
+     <li><a href="/users/<%= currentUser.username %>">My Account</a></li>
+     <li><a href="/logout">Logout</a></li>
+    <% } else { %>
+     <li><a href="/users/new">Sign Up</a></li>
+     <li><a href="/login">Login</a></li>
+    <% } %>
+   </ul>
+  </div>
+ </div>
+</nav>
+
+  <div class="container user user-edit">
+
+   <div class="buttons">
+    <a class="btn btn-default" href="/users/<%= username %>">Back</a>
+   </div>
+
+   <form class="user-form form-horizontal" action="/users/<%= username %>?_method=put" method="post">
+    <div class="contentBox">
+     <h3 class="contentBoxTop">Edit User</h3>
+     <fieldset>
+      <div class="form-group <%= (errors.currentPassword)?'has-error':'' %>">
+       <label for="currentPassword" class="col-sm-12 control-label">Current Password*</label>
+       <div class="col-sm-9 col-sm-offset-3">
+        <input class="form-control" type="password" id="currentPassword" name="currentPassword" value="">
+        <% if(errors.currentPassword){ %>
+         <span class="help-block"><%= errors.currentPassword.message %></span>
+        <% } %>
+       </div>
+      </div>
+      <hr></hr>
+      <div class="form-group <%= (errors.username)?'has-error':'' %>">
+       <label for="username" class="col-sm-3 control-label">Username*</label>
+       <div class="col-sm-9">
+        <input class="form-control" type="text" id="username" name="username" value="<%= user.username %>">
+        <% if(errors.username){ %>
+         <span class="help-block"><%= errors.username.message %></span>
+        <% } %>
+       </div>
+      </div>
+      <div class="form-group <%= (errors.name)?'has-error':'' %>">
+       <label for="name" class="col-sm-3 control-label">Name*</label>
+       <div class="col-sm-9">
+        <input class="form-control" type="text" id="name" name="name" value="<%= user.name %>">
+        <% if(errors.name){ %>
+         <span class="help-block"><%= errors.name.message %></span>
+        <% } %>
+       </div>
+      </div>
+      <div class="form-group <%= (errors.email)?'has-error':'' %>">
+       <label for="email" class="col-sm-3 control-label">Email</label>
+       <div class="col-sm-9">
+        <input class="form-control" type="text" id="email" name="email" value="<%= user.email %>">
+        <% if(errors.email){ %>
+         <span class="help-block"><%= errors.email.message %></span>
+        <% } %>
+       </div>
+      </div>
+      <div class="form-group <%= (errors.newPassword)?'has-error':'' %>">
+       <label for="newPassword" class="col-sm-12 control-label">New Password</label>
+       <div class="col-sm-9 col-sm-offset-3">
+        <input class="form-control" type="password" id="newPassword" name="newPassword" value="">
+        <% if(errors.newPassword){ %>
+         <span class="help-block"><%= errors.newPassword.message %></span>
+        <% } %>
+       </div>
+      </div>
+      <div class="form-group <%= (errors.passwordConfirmation)?'has-error':'' %>">
+       <label for="passwordConfirmation" class="col-sm-12 control-label">Password Confirmation</label>
+       <div class="col-sm-9 col-sm-offset-3">
+        <input class="form-control" type="password" id="passwordConfirmation" name="passwordConfirmation" value="">
+        <% if(errors.passwordConfirmation){ %>
+         <span class="help-block"><%= errors.passwordConfirmation.message %></span>
+        <% } %>
+       </div>
+      </div>
+      <p>
+       <small>*Required</small>
+      </p>
+     </fieldset>
+    </div>
+    <div class="buttons">
+     <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+    <% if(errors.unhandled){ %>
+     <div class="alert alert-danger">
+      <%= errors.unhandled %>
+     </div>
+    <% } %>
+   </form>
+
+  </div> <!-- container end -->
+ </body>
+</html>
