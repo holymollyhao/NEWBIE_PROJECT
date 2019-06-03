@@ -152,6 +152,8 @@ function removeElem (arg) {
   if(!(arg.parentElement.nextSibling.tagName=="DT")){
     arg.parentElement.nextSibling.remove()
   }
+  console.log("shit")
+  console.log(val)
   axios.post('/vote/del', val)
   .then((res) => {
     document.getElementById("vote-list").removeChild(arg.parentElement);

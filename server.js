@@ -61,7 +61,6 @@ app.post('/vote/create/', (req, res) => {
 
 app.get('/vote/retrieve', (req, res) => {
     console.log(req.currentUser)
-    console.log("DKL:ASKFJL:KFJ:LS")
     voteSchema.find({}, function(err, results){
         if (err) {
             console.log(err);
@@ -86,9 +85,11 @@ app.post('/vote/update', (req, res)=>{
 })
 
 app.post('/vote/del', (req, res) => {
-    var vote = req.body.vote;
-    console.log(vote);
-    voteSchema.deleteOne({ vote }, function(err, results){
+    var vote = req.body.content;
+    console.log("what")
+    console.log(req.body);
+    console.log("what")
+    voteSchema.deleteOne({ content: vote }, function(err, results){
         if (err) {
             console.log("delelte error")
         }
